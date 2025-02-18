@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# List of specific directories to process
+DIRECTORIES=("MO" "NA" "NC" "Thrall" "Tillard" "WA" "WB")
+
+# Loop through each specified directory
+for DIR in "${DIRECTORIES[@]}"; do
+    # Check if the directory exists
+    if [ -d "$DIR" ]; then
+        # Change into the directory
+        cd "$DIR" || continue
+        
+        # Run the Trimmomatic script, redirecting output to [DIRECTORYNAME]_trimmomatic_output.txt
+        ../../scripts/run_trimmomatic.sh > "${DIR}_trimmomatic_output.txt" 2>&1
+        
+        # Go back to the main directory
+        cd ..
+    else
+        echo "Directory $DIR does not exist."
+    fi
+done
