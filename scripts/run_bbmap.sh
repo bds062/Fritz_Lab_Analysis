@@ -11,46 +11,37 @@
 #SBATCH --partition=cbcb
 #SBATCH --account=cbcb
 #SBATCH --time=540:00
+#SBATCH --begin=now+3hour
 #SBATCH --mail-type=BEGIN,END,TIME_LIMIT
 #SBATCH --mail-user=bds062@terpmail.umd.edu
-#SBATCH -o ./bbmap_output.txt
-#SBATCH -e ./bbmap_output.txt
+#SBATCH -o ./bbmap_output_MM.txt
+#SBATCH -e ./bbmap_output_MM.txt
 
 # Path to the BBMap program
-bbmap_program="../../programs/BBMap/bbmap/bbmap.sh"
+BBMAP="../../programs/BBMap/bbmap/bbmap.sh"
 
+FASTQ_DIR="."
 # Iterate through each .fastq file in the directory
-for file in trimmed_*.fastq; do
-  # Extract the base filename without the "trimmed_" prefix
-  base_name=${file#trimmed_}
-  
-  # Construct the output file name for the first mapping command
-  output_file="mapped_${base_name}"
-  
-  # Run the BBMap mapping command
-  echo "Processing file: $file"
-  $bbmap_program in="$file" out="$output_file"
-  
-  # Check if the mapping command succeeded
-  if [ $? -eq 0 ]; then
-    echo "Successfully processed: $file -> $output_file"
+# Species tag for the output file (edit this before running)
+SPECIES="MM"
+
+../../programs/BBMap/bbmap/bbmap.sh ref=ref_files/MorganellaMorganii.fna 
+
+# Loop through paired FASTQ files
+for file in ${FASTQ_DIR}/trimmed_*_1_paired.fastq; do
+    # Extract the SRR ID
+    base_name=$(basename "$file" | sed -E 's/trimmed_(SRR[0-9]+)_1_paired.fastq/\1/')
     
-    # Run the second BBMap command to generate coverage statistics
-    $bbmap_program in="$file" \
-      covstats="covstats_${base_name}.txt" \
-      covhist="covhist_${base_name}.txt" \
-      basecov="basecov_${base_name}.txt" \
-      bincov="bincov_${base_name}.txt"
+    # Define the matching read 2 file
+    read2_file="${FASTQ_DIR}/trimmed_${base_name}_2_paired.fastq"
     
-    # Check if the second command succeeded
-    if [ $? -eq 0 ]; then
-      echo "Coverage stats generated for: $file"
+    # Check if read 2 file exists
+    if [[ -f "$read2_file" ]]; then
+        echo "Running BBMap for $base_name..."
+        $BBMAP in1="$file" in2="$read2_file" out="${base_name}_${SPECIES}.sam"
     else
-      echo "Error generating coverage stats for: $file" >&2
+        echo "Skipping $read2_file: Read 2 file not found."
     fi
-  else
-    echo "Error processing: $file" >&2
-  fi
 done
 
-echo "All files processed."
+echo "BBMap processing complete."
