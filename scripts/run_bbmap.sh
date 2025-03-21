@@ -23,8 +23,8 @@ BBMAP="../../programs/BBMap/bbmap/bbmap.sh"
 FASTQ_DIR="."
 # Iterate through each .fastq file in the directory
 # Species tag for the output file (edit this before running)
-PREV="EC"
-SPECIES="HZN"
+PREV="HZN"
+SPECIES="MM"
 
 ../../programs/BBMap/bbmap/bbmap.sh ref=ref_files/MorganellaMorganii.fna
 
