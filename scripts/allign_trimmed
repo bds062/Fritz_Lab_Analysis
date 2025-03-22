@@ -1,0 +1,33 @@
+#!/bin/sh
+
+#Script to run Bowtie2 and allign all "trimmed" files in a directory
+#Requires: Bowtie2 Installation, Trimmomatic trimmed files
+#BDS 3/22/25
+
+#SBATCH --job-name=Bowtie2ContaminatedTrims
+#SBATCH -c 16
+#SBATCH --mem=128G
+#SBATCH --qos=high
+#SBATCH --partition=cbcb
+#SBATCH --account=cbcb
+#SBATCH --time=540:00
+#SBATCH --mail-type=BEGIN,END,TIME_LIMIT
+#SBATCH --mail-user=bds062@terpmail.umd.edu
+#SBATCH -o ./trimmedAllignment.txt
+#SBATCH -e ./trimmedAllignment.txt
+
+BOWTIE="../../programs/bowtie2/bowtie2"
+TAGS="-t -x zea"
+
+for file1 in ./trimmed_*_1_paired.fastq; do
+    # Extract the SRR ID
+    base_name=$(basename "$file1" | sed -E 's/trimmed_(SRR[0-9]+)_1_paired.fastq/\1/')
+    file2="trimmed_${base_name}_2_paired.fastq"
+
+    if [[ -f "$file2" ]]; then
+        echo "Running Bowtie2 for $base_name..."
+        $BOWTIE $TAGS -1 "$file1" -2 "$file2" --very-sensitive -S "trimmed_${base_name}.sam"
+        else
+        echo "Skipping ${file1}: Read 2 file not found."
+    fi
+done
