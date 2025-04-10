@@ -10,7 +10,7 @@
 #SBATCH --qos=high
 #SBATCH --partition=cbcb
 #SBATCH --account=cbcb
-#SBATCH --time=540:00
+#SBATCH --time=1-00
 #SBATCH --mail-type=BEGIN,END,TIME_LIMIT
 #SBATCH --mail-user=bds062@terpmail.umd.edu
 #SBATCH -o ./cleanAllignment.txt
