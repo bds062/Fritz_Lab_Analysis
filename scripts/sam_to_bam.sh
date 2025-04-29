@@ -12,20 +12,24 @@
 #SBATCH --time=1-00
 #SBATCH --mail-type=BEGIN,END,TIME_LIMIT
 #SBATCH --mail-user=bds062@terpmail.umd.edu
-#SBATCH -o ./sam_to_bam_output.txt
-#SBATCH -e ./sam_to_bam_output.txt
+#SBATCH -o ./samtobam_output.txt
+#SBATCH -e ./samtobam_output.txt
 
 # Set the path to samtools
 SAMTOOLS="../../programs/samtools-1.21/samtools"
 
-# Loop through each .sam file in the current directory
 for sam_file in *.sam; do
-  # Remove the .sam extension to get the base name
-  base_name="${sam_file%.sam}"
+  INFILE=$sam_file
+  TEMPFILE=$(echo $INFILE | sed 's/.sam/.temp/')
+  OUTFILE=$(echo $INFILE | sed 's/.sam/.bam/')
+  STATSFILE=$(echo $INFILE | sed 's/.sam/stats.txt/')
+  echo the sam file $INFILE was sorted and converted to the sorted bam file $OUTFILE
 
-  # Run samtools to convert .sam to .bam
-  echo "Converting $sam_file to $base_name.bam..."
-  $SAMTOOLS view -b -S "$sam_file" > "${base_name}.bam"
+  $SAMTOOLS view -@ 4 -S -h -u $INFILE | \
+  $SAMTOOLS sort -@ 4 -T $TEMPFILE -> $OUTFILE
+
+  $SAMTOOLS index $OUTFILE
+
+  $SAMTOOLS stats $OUTFILE > $STATSFILE
 done
 
-echo "All SAM files have been converted to BAM."
