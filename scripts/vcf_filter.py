@@ -6,7 +6,7 @@ dp_threshold = num_samples * 3
 
 # Input/output filenames
 vcf_file = "contaminated.vcf"
-output_file = "contaminated_filtered.tsv"
+output_file = "contaminated_filtered3x.tsv"
 
 with open(vcf_file, 'r') as infile, open(output_file, 'w') as outfile:
     for line in infile:
