@@ -6,7 +6,7 @@
 #SBATCH --qos=high
 #SBATCH --partition=cbcb
 #SBATCH --account=cbcb
-#SBATCH --time=00:02:00
+#SBATCH --time=00:05:00
 #SBATCH --mail-type=BEGIN,END,TIME_LIMIT
 #SBATCH --mail-user=bds062@terpmail.umd.edu
 #SBATCH --array=0-13%10   # Replace <N-1> with number of FASTA files minus one

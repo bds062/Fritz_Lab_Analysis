@@ -16,16 +16,16 @@
 #SBATCH -e ./trimmomatic_output.txt
 
 # Path to Trimmomatic JAR file
-TRIMMOMATIC_JAR="../../programs/Trimmomatic-0.39/trimmomatic-0.39.jar"
+TRIMMOMATIC_JAR="/fs/cbcb-lab/mfritz13/FritzLab_RawData_Archive/North_etal_2023_reanalysis/programs/Trimmomatic-0.39/trimmomatic-0.39.jar"
 
 # Path to the adapter file
-ADAPTERS="../../programs/Trimmomatic-0.39/adapters/adapt_seq.fa"
+ADAPTERS="/fs/cbcb-lab/mfritz13/FritzLab_RawData_Archive/North_etal_2023_reanalysis/programs/Trimmomatic-0.39/adapters/adapt_seq.fa"
 
 # Trimming parameters
 TRIM_PARAMS="ILLUMINACLIP:${ADAPTERS}:2:30:10:8:true SLIDINGWINDOW:4:15 MINLEN:50"
 
 # Directories to process
-DIRECTORIES=("MO" "NA" "NC" "Thrall" "Tillard" "WA" "WB")
+DIRECTORIES=("/fs/cbcb-lab/mfritz13/mfritz13_projects/Hzea_TimeSer_2025/data/Taylor2021_2002samples" "/fs/cbcb-lab/mfritz13/mfritz13_projects/Hzea_TimeSer_2025/data/Taylor2021_2012samples" "/fs/cbcb-lab/mfritz13/mfritz13_projects/Hzea_TimeSer_2025/data/Taylor2021_2017samples")
 
 # Loop through each directory
 for DIR in "${DIRECTORIES[@]}"; do

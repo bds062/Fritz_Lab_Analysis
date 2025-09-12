@@ -13,9 +13,9 @@
 #SBATCH -e ./logs/align_%A_%a.err
 
 # === Setup ===
-BOWTIE="../../programs/bowtie2/bowtie2"
+BOWTIE="/fs/cbcb-lab/mfritz13/FritzLab_RawData_Archive/North_etal_2023_reanalysis//programs/bowtie2/bowtie2"
 TAGS="-t -x ../other/zea"
-SAMTOOLS="../../programs/samtools-1.21/samtools"
+SAMTOOLS="/fs/cbcb-lab/mfritz13/FritzLab_RawData_Archive/North_etal_2023_reanalysis//programs/samtools-1.21/samtools"
 
 # Ensure logs directory exists
 mkdir -p logs
