@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#Script to make vcf for contaminated files
+#Requires: BCFTools installed
+#BDS 9/19/25
+
+#SBATCH --job-name=HzeaSequencerVariantCalling
+#SBATCH -c 32
+#SBATCH --mem=128G
+#SBATCH --qos=huge-long
+#SBATCH --partition=cbcb
+#SBATCH --account=cbcb
+#SBATCH --time=5-00
+#SBATCH --mail-type=BEGIN,END,TIME_LIMIT
+#SBATCH --mail-user=bds062@terpmail.umd.edu
+#SBATCH -o ./variantCalling2.out
+#SBATCH -e ./variantCalling2.out
+
+BCFTOOLS="/fs/cbcb-lab/mfritz13/FritzLab_RawData_Archive/North_etal_2023_reanalysis/programs/bcftools/bcftools"
+REF="/fs/cbcb-lab/mfritz13/FritzLab_RawData_Archive/North_etal_2023_reanalysis/data_files/other/ZeaRef.fna"
+
+ls *.bam > bam_list.txt
+"$BCFTOOLS" mpileup -Ou -f "$REF" --bam-list bam_list.txt --threads 32 | "$BCFTOOLS" call -vmO v --threads 32 -o ./Hzea_WGS_TimeSeries.redo.vcf

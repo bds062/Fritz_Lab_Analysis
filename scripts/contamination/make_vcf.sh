@@ -18,7 +18,7 @@
 # ../../programs/bcftools/bcftools mpileup -f ./ref_files/ZeaRef.fna -b ./clean_bam.txt -I --threads 4 -O u -o ./clean.bcf
 # ../../programs/bcftools/bcftools mpileup -f ./ref_files/ZeaRef.fna -b ./contaminated_bam.txt -I --threads 4 -O u -o ./contaminated.bcf
 # ../../programs/bcftools/bcftools call -vmO v ./clean.bcf -o ./clean.vcf 
-../../programs/bcftools/bcftools call -vmO v ./contaminated.bcf -o ./contaminated.vcf 
+#../../programs/bcftools/bcftools call -vmO v ./contaminated.bcf -o ./contaminated.vcf 
 # ../../programs/samtools-1.21/bgzip clean.vcf
 # ../../programs/samtools-1.21/bgzip contaminated.vcf
 # ../../programs/bcftools/tabix -p vcf clean.vcf.gz

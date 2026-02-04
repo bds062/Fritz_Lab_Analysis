@@ -59,14 +59,15 @@ def compute_mean_stdev(filename):
     return mean, math.sqrt(variance)
 
 def find_outliers(filename, mean, stdev, outfile, chrom_map):
-    """Second pass: find depth > mean + 12*stdev, report ranges using mapped chrom names"""
-    threshold = mean + 12 * stdev
+    """Second pass: find depth > mean + 6*stdev, report ranges using mapped chrom names"""
+    # threshold = mean + 6 * stdev
+    threshold=mean*2
     with open(filename) as f, open(outfile, "w") as out:
         out.write(f"File: {filename}\n")
         out.write(f"Mean depth: {mean:.2f}\n")
         out.write(f"Stdev: {stdev:.2f}\n")
-        out.write(f"Threshold (mean+12*stdev): {threshold:.2f}\n\n")
-        out.write("Outlier positions (depth > mean + 12*stdev):\n")
+        out.write(f"Threshold (mean*2): {threshold:.2f}\n\n")
+        out.write("Outlier positions (depth > mean*2):\n")
 
         current_chrom = None
         start_pos = None
@@ -152,7 +153,7 @@ def main():
 
         print(f"Processing {filename}...")
         mean, stdev = compute_mean_stdev(filename)
-        outfile = os.path.splitext(filename)[0] + "_outliers12x.txt"
+        outfile = os.path.splitext(filename)[0] + "_outliers2xMean.txt"
         find_outliers(filename, mean, stdev, outfile, chrom_map)
         print(f"Results written to {outfile}")
 

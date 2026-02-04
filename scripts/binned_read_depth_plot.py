@@ -7,7 +7,7 @@ from collections import defaultdict
 import csv 
 
 # CONFIGURATION
-user_chromosome = "chr21" # Set to specific chromosome (e.g., "chr1") or None for all chromosomes
+user_chromosome = "chr30" # Set to specific chromosome (e.g., "chr1") or None for all chromosomes
 bin_size = 10_000
 low_depth_threshold = 5
 
