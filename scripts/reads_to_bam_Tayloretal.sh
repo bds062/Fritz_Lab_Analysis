@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=Reads_to_bam_HzeaFiles
-#SBATCH --array=0-91%10
+#SBATCH --array=0-10%11
 #SBATCH -c 16
 #SBATCH --mem=128G
 #SBATCH --qos=high
@@ -19,12 +19,12 @@ TAGS="-p 16 -t -x /fs/cbcb-lab/mfritz13/FritzLab_RawData_Archive/North_etal_2023
 SAMTOOLS="/fs/cbcb-lab/mfritz13/FritzLab_RawData_Archive/North_etal_2023_reanalysis/programs/samtools-1.21/samtools"
 
 # Build array of R1 files
-file_array=($(ls trimmed_*_R1_paired.fastq.gz | sort))
+file_array=($(ls trimmed_*_R1_paired.fastq | sort))
 
 # Current sample
 file1=${file_array[$SLURM_ARRAY_TASK_ID]}
-base_name=$(basename "$file1" | sed -E 's/trimmed_(.*)_R1_paired.fastq.gz/\1/')
-file2="trimmed_${base_name}_R2_paired.fastq.gz"
+base_name=$(basename "$file1" | sed -E 's/trimmed_(.*)_R1_paired.fastq/\1/')
+file2="trimmed_${base_name}_R2_paired.fastq"
 bam_out="trimmed_${base_name}.bam"
 bam_index="${bam_out}.bai"
 depth_out="trimmed_${base_name}_depth.tsv"
